@@ -1,4 +1,4 @@
-const BASE_URL = `http://localhost:5000/api`;
+const BASE_URL = `https://agentconnect-privatebin-generator.osc-fr1.scalingo.io/api`;
 
 async function create({ text }: { text: string }) {
     const url = `${BASE_URL}/create-paste-bin`;
