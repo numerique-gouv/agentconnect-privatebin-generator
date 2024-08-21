@@ -11,14 +11,14 @@ function Home() {
     const [clientId, setClientId] = useState('clientid');
     const [clientSecret, setClientSecret] = useState('clientsecet');
 
-    const mutation = useMutation<{ url: string }, DefaultError, { text: string; password: string }>(
+    const mutation = useMutation<{ url: string; password: string }, DefaultError, { text: string }>(
         { mutationFn: privateBinApi.create },
     );
 
     const mail = createMail({
         email,
         url: mutation.data?.url,
-        password: mutation.variables?.password,
+        password: mutation.data?.password,
         spName,
     });
     return (
@@ -42,8 +42,7 @@ function Home() {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const textToStore = computeTextToStore();
-        const password = 'BIDULE';
-        mutation.mutate({ text: textToStore, password });
+        mutation.mutate({ text: textToStore });
     }
 
     function createMail(params: {
@@ -59,7 +58,7 @@ function Home() {
         Vous trouverez vos identifiants pour le Fournisseur de Service "${params.spName}" à l'adresse suivante : ${params.url}\n
         
         Le mot de passe pour y accéder est le suivant : ${params.password}\n
-
+        
         Veuillez notez que le lien expirera dans 7 jours à compter de cette date.\n
 
         Bien cordialement,\n

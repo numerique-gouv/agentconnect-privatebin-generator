@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, request
 from flask_cors import CORS  
 import os
 import privatebinapi
+import secrets
 
 app = Flask(__name__, static_folder='client/build')
 
@@ -10,12 +11,12 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 @app.route('/api/create-paste-bin', methods=['POST'])
 def process_data():
     data = request.get_json()  # Get the JSON data sent in the request
-    password = data.get('password')
     text = data.get('text')
+    password = secrets.token_hex(32)  
 
     send_response = privatebinapi.send("https://privatebin.dev-franceconnect.fr", text=text, password=password, burn_after_reading=False, expiration="1week")
 
-    return {"url": send_response.get("full_url")}
+    return {"url": send_response.get("full_url"), "password": password}
 
 
 # Serve React App

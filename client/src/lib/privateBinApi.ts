@@ -1,8 +1,8 @@
-const BASE_URL = `http://localhost:5000/api`
+const BASE_URL = `http://localhost:5000/api`;
 
-async function create({text, password}:{text: string,  password : string}) {
-    const url = `${BASE_URL}/create-paste-bin`
-    return performApiCall(url, "POST", {text, password})
+async function create({ text }: { text: string }) {
+    const url = `${BASE_URL}/create-paste-bin`;
+    return performApiCall(url, 'POST', { text });
 }
 
 async function performApiCall(
@@ -19,7 +19,7 @@ async function performApiCall(
             Accept: 'application/json',
             'Content-Type': 'application/json',
         };
-  
+
         response = await fetch(url, {
             method,
             headers,

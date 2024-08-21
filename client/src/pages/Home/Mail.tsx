@@ -8,47 +8,31 @@ type mailType = {
 };
 
 function Mail(props: { mail: mailType }) {
+    const mailto = computeMailto(props.mail);
     return (
         <>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <Label>Destinataire :</Label>
-                        </td>
-                        <td>
-                            <Value>{props.mail.to}</Value>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <Label>Cc :</Label>
-                        </td>
-                        <td>
-                            <Value>{props.mail.cc}</Value>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <Label>Objet :</Label>
-                        </td>
-                        <td>
-                            <Value>{props.mail.subject}</Value>
-                        </td>
-                    </tr>
+            <a href={mailto}>Envoyer le mail</a>
 
-                    <tr>
-                        <td>
-                            <Label>Mail :</Label>
-                        </td>
-                        <td>
-                            <Value>{props.mail.body}</Value>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <Label>Destinataire :</Label>
+            <Value>{props.mail.to}</Value>
+            <Label>Cc :</Label>
+            <Value>{props.mail.cc}</Value>
+            <Label>Objet :</Label>
+            <Value>{props.mail.subject}</Value>
+            <Label>Mail :</Label>
+            <Value>
+                {props.mail.body.split('\n').map((line) => (
+                    <p>{line}</p>
+                ))}
+            </Value>
         </>
     );
+}
+
+function computeMailto(mail: mailType) {
+    return `mailto:${mail.to}?subject=${encodeURIComponent(mail.subject)}&cc=${
+        mail.cc
+    }&body=${encodeURIComponent(mail.body)}`;
 }
 
 const Label = styled(Typography)({
@@ -58,5 +42,6 @@ const Label = styled(Typography)({
     flex: 1,
 });
 const Value = styled(Typography)({ flex: 1 });
+
 export { Mail };
 export type { mailType };
