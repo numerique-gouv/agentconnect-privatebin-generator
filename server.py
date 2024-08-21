@@ -3,6 +3,9 @@ from flask_cors import CORS
 import os
 import privatebinapi
 import secrets
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__, static_folder='client/build')
 
@@ -29,4 +32,4 @@ def serve(path):
         return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=os.getenv("PORT"))
